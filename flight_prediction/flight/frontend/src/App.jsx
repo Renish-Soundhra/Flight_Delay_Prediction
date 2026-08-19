@@ -4,6 +4,7 @@ import Home from './pages/Home.jsx'
 import Prediction from './pages/Prediction.jsx'
 import ModelPerformance from './pages/ModelPerformance.jsx'
 import ModelInsights from './pages/ModelInsights.jsx'
+import Dashboard from './pages/Dashboard.jsx'
 
 export default function App() {
   return (
@@ -12,6 +13,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/predict" element={<Prediction />} />
+        <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/performance" element={<ModelPerformance />} />
         <Route path="/insights" element={<ModelInsights />} />
       </Routes>

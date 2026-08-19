@@ -24,7 +24,7 @@ export default function PredictionResult({ result }) {
 
   return (
     <div>
-      <div className="result-card">
+      <div className="card result-card">
         <div className={`result-badge ${delayed ? 'delayed' : 'on-time'}`}>
           <span className="result-badge-dot" />
           {delayed ? 'Delayed' : 'On Time'}

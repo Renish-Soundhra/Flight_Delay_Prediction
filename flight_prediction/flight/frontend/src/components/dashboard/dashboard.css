@@ -1,0 +1,389 @@
+/* Dashboard specific CSS */
+.dashboard-page {
+  padding: 24px;
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+.dashboard-header {
+  margin-bottom: 24px;
+}
+
+.dashboard-header h1 {
+  font-family: var(--font-display);
+  font-size: 32px;
+  margin: 0;
+  color: var(--text);
+}
+
+.dashboard-header p {
+  color: var(--text-dim);
+  margin: 8px 0 0;
+}
+
+.panel {
+  padding: 20px;
+}
+
+/* Filters */
+.dashboard-filters-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding: 16px;
+  margin-bottom: 24px;
+  align-items: flex-end;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.filter-group label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.filter-group select, .filter-group input[type="text"] {
+  background: var(--bg);
+  border: 1px solid var(--border-soft);
+  color: var(--text);
+  padding: 8px 12px;
+  border-radius: 4px;
+  min-width: 140px;
+}
+
+.toggle-switch {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 35px;
+}
+
+.simulation-controls {
+  border-left: 1px solid var(--border);
+  padding-left: 16px;
+  margin-left: 8px;
+}
+
+.control-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.control-buttons button {
+  background: var(--amber);
+  color: var(--bg);
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.control-buttons select {
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+
+.simulation-time {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--amber);
+  margin-top: 8px;
+}
+
+.reset-btn {
+  background: transparent;
+  color: var(--text-dim);
+  border: 1px solid var(--border);
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* KPI Cards */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.kpi-card {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border-radius: 8px; /* Slightly more rounded for dashboard */
+}
+
+.kpi-title {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.kpi-value {
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: bold;
+  color: var(--text);
+}
+
+.kpi-value.warning { color: var(--amber); }
+.kpi-value.danger { color: var(--red); }
+.kpi-value.success { color: var(--green); }
+
+/* Map and Table */
+.map-table-row {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.map-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.map-controls h3 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.map-toggles {
+  display: flex;
+  gap: 12px;
+  font-size: 13px;
+}
+
+.map-wrapper {
+  position: relative;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.map-loading {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(10, 15, 28, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  font-family: var(--font-mono);
+}
+
+/* Table */
+.high-risk-table-container h3 {
+  margin-top: 0;
+  margin-bottom: 16px;
+  font-size: 16px;
+}
+
+.table-responsive {
+  overflow-x: auto;
+}
+
+.clickable-row {
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.clickable-row:hover {
+  background: var(--panel-2);
+}
+
+.sort-icon {
+  margin-left: 4px;
+  color: var(--amber);
+}
+
+.risk-badge {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-family: var(--font-mono);
+  font-weight: bold;
+}
+
+.risk-high { background: rgba(239, 68, 68, 0.2); color: #ef4444; border: 1px solid #ef4444; }
+.risk-medium { background: rgba(245, 158, 11, 0.2); color: #f59e0b; border: 1px solid #f59e0b; }
+.risk-low { background: rgba(16, 185, 129, 0.2); color: #10b981; border: 1px solid #10b981; }
+
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 16px;
+  font-size: 13px;
+  font-family: var(--font-mono);
+}
+
+.pagination button {
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Charts */
+.dashboard-charts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 24px;
+}
+
+.chart-card h3 {
+  margin-top: 0;
+  margin-bottom: 16px;
+  font-size: 16px;
+}
+
+/* Overlays (Flight Detail & Aircraft Rotation) */
+.flight-detail-overlay,
+.aircraft-rotation-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  z-index: 2000;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.flight-detail-panel,
+.aircraft-rotation-panel {
+  width: 400px;
+  max-width: 90vw;
+  background: var(--panel);
+  border-left: 1px solid var(--border);
+  height: 100vh;
+  padding: 24px;
+  overflow-y: auto;
+  position: relative;
+}
+
+.close-btn {
+  position: absolute;
+  top: 16px; right: 16px;
+  background: transparent;
+  border: none;
+  color: var(--text-dim);
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.flight-detail-content h2 {
+  margin-top: 0;
+}
+
+.route-header {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.route-header .arrow {
+  color: var(--text-dim);
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.detail-item label {
+  font-size: 11px;
+  color: var(--text-faint);
+  text-transform: uppercase;
+}
+
+.detail-item div {
+  font-size: 14px;
+  margin-top: 4px;
+}
+
+.rotation-context {
+  background: var(--panel-2);
+  padding: 16px;
+  border-radius: 8px;
+}
+
+/* Timeline */
+.timeline {
+  margin-top: 24px;
+  position: relative;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 5px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--border);
+}
+
+.timeline-item {
+  position: relative;
+  padding-left: 24px;
+  margin-bottom: 24px;
+}
+
+.timeline-marker {
+  position: absolute;
+  left: 0;
+  top: 6px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--border);
+}
+
+.timeline-content h4 {
+  margin: 0 0 4px 0;
+}
+
+.timeline-route {
+  font-size: 13px;
+  color: var(--text-dim);
+  margin-bottom: 8px;
+}
+
+.timeline-stats {
+  font-size: 12px;
+  color: var(--text);
+}
+
+.timeline-turnaround {
+  margin-top: 12px;
+  padding: 8px;
+  background: rgba(245, 158, 11, 0.1);
+  border-left: 2px solid var(--amber);
+  font-size: 12px;
+}

@@ -316,8 +316,7 @@ def dashboard_model_analytics():
         curves = get_evaluation_curves()
     except Exception as exc:
         curves = {"error": str(exc)}
-    return {
-        "metrics": metrics,
-        "feature_importance": importance,
-        "curves": curves,
-    }
+    response = metrics.copy()
+    response["feature_importance"] = importance
+    response["curves"] = curves
+    return response

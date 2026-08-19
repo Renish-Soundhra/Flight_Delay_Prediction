@@ -1,97 +1,115 @@
-import { MapContainer, TileLayer, CircleMarker, Polyline, Popup, Tooltip } from 'react-leaflet'
-import 'leaflet/dist/leaflet.css'
+import React, { useEffect, useState } from 'react';
+import { MapContainer, TileLayer, CircleMarker, Polyline, Tooltip } from 'react-leaflet';
+import 'leaflet/dist/leaflet.css';
+import { useDashboardContext } from './DashboardContext';
+import { getDashboardMap } from '../../services/dashboardApi';
 
-const RISK_COLOR = {
-  LOW: '#35d68a',
-  MEDIUM: '#f5b301',
-  HIGH: '#ff5c4d',
-}
-
-export default function FlightMap({
-  payload,
-  loading,
-  showRoutes,
-  showAirports,
-  onSelectFlight,
-  onSelectAirport,
-}) {
-  if (loading) {
-    return <div className="intel-map skeleton-block">Loading map</div>
+// A simple utility to map risk to color
+const getRiskColor = (risk) => {
+  switch (risk) {
+    case 'HIGH': return '#ef4444'; // red-500
+    case 'MEDIUM': return '#f59e0b'; // amber-500
+    case 'LOW': return '#10b981'; // emerald-500
+    default: return '#6b7280'; // gray-500
   }
-  if (!payload) {
-    return <div className="intel-map empty-block">Map data is not available.</div>
-  }
+};
 
-  const routes = showRoutes ? payload.routes || [] : []
-  const airports = showAirports ? payload.airports || [] : []
+export default function FlightMap({ onFlightClick }) {
+  const { apiParams } = useDashboardContext();
+  const [mapData, setMapData] = useState({ routes: [], airports: [] });
+  const [loading, setLoading] = useState(true);
+
+  // Map toggles
+  const [showRoutes, setShowRoutes] = useState(true);
+  const [showAirports, setShowAirports] = useState(true);
+
+  useEffect(() => {
+    setLoading(true);
+    getDashboardMap(apiParams)
+      .then(setMapData)
+      .catch(console.error)
+      .finally(() => setLoading(false));
+  }, [apiParams]);
 
   return (
-    <div className="intel-map">
-      <MapContainer center={[39.8, -98.5]} zoom={4} minZoom={3} maxZoom={10} scrollWheelZoom>
-        <TileLayer
-          attribution='&copy; OpenStreetMap'
-          url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
-        />
-        {routes.map((route) => {
-          if (
-            route.origin_lat == null ||
-            route.origin_lon == null ||
-            route.dest_lat == null ||
-            route.dest_lon == null
-          ) {
-            return null
-          }
-          const color = RISK_COLOR[route.risk] || '#5b8dff'
-          return (
+    <div className="flight-map-container card">
+      <div className="map-controls">
+        <h3>Live Interactive Map</h3>
+        <div className="map-toggles">
+          <label>
+            <input type="checkbox" checked={showRoutes} onChange={(e) => setShowRoutes(e.target.checked)} />
+            Show Routes
+          </label>
+          <label>
+            <input type="checkbox" checked={showAirports} onChange={(e) => setShowAirports(e.target.checked)} />
+            Show Airports
+          </label>
+        </div>
+      </div>
+      
+      <div className="map-wrapper" style={{ height: '400px', width: '100%' }}>
+        {loading && <div className="map-loading">Loading Map Data...</div>}
+        <MapContainer center={[39.8283, -98.5795]} zoom={4} style={{ height: '100%', width: '100%' }}>
+          <TileLayer
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a>'
+            url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+          />
+          
+          {/* Render Routes */}
+          {showRoutes && mapData.routes?.map((route, i) => (
             <Polyline
-              key={`${route.origin}-${route.destination}`}
+              key={`route-${i}`}
               positions={[
                 [route.origin_lat, route.origin_lon],
-                [route.dest_lat, route.dest_lon],
+                [route.dest_lat, route.dest_lon]
               ]}
-              pathOptions={{ color, weight: Math.min(1 + Math.log10(route.flight_count + 1), 4), opacity: 0.7 }}
+              pathOptions={{
+                color: getRiskColor(route.risk),
+                weight: route.risk === 'HIGH' ? 3 : 1,
+                opacity: 0.6
+              }}
               eventHandlers={{
-                click: () => {
-                  if (route.sample_flight_id) onSelectFlight(route.sample_flight_id)
-                },
+                click: () => onFlightClick && onFlightClick(route.sample_flight_id)
               }}
             >
-              <Popup>
-                <strong>
-                  {route.origin} → {route.destination}
-                </strong>
-                <div>Flights: {route.flight_count}</div>
-                <div>Max P(delay): {Number(route.max_probability).toFixed(3)}</div>
-                <div>Avg P(delay): {Number(route.avg_probability).toFixed(3)}</div>
-                <div>Risk band: {route.risk}</div>
-              </Popup>
-            </Polyline>
-          )
-        })}
-        {airports.map((airport) => {
-          if (airport.lat == null || airport.lon == null) return null
-          const radius = Math.max(4, Math.min(16, Math.sqrt(airport.flight_count)))
-          return (
-            <CircleMarker
-              key={airport.airport}
-              center={[airport.lat, airport.lon]}
-              radius={radius}
-              pathOptions={{ color: '#edf1f9', fillColor: '#5b8dff', fillOpacity: 0.85, weight: 1 }}
-              eventHandlers={{ click: () => onSelectAirport?.(airport) }}
-            >
               <Tooltip>
-                {airport.airport} · {airport.flight_count} flights · avg P{' '}
-                {Number(airport.avg_probability || 0).toFixed(3)}
+                {route.origin} → {route.destination}<br/>
+                Flights: {route.flight_count}<br/>
+                Max Risk: {route.risk} ({(route.max_probability * 100).toFixed(1)}%)
               </Tooltip>
-            </CircleMarker>
-          )
-        })}
-      </MapContainer>
-      <div className="intel-map-legend">
-        <span className="risk-low">Low &lt; 0.70</span>
-        <span className="risk-med">Medium</span>
-        <span className="risk-high">High ≥ 0.90</span>
+            </Polyline>
+          ))}
+
+          {/* Render Airports */}
+          {showAirports && mapData.airports?.map((airport, i) => {
+            // Scale radius by flight volume, min 3, max 15
+            const radius = Math.max(3, Math.min(15, Math.sqrt(airport.flight_count) * 1.5));
+            // Risk level for airport based on avg prob
+            const avgProb = airport.avg_probability;
+            const risk = avgProb >= 0.90 ? 'HIGH' : avgProb >= 0.70 ? 'MEDIUM' : 'LOW';
+
+            return (
+              <CircleMarker
+                key={`apt-${i}`}
+                center={[airport.lat, airport.lon]}
+                radius={radius}
+                pathOptions={{
+                  color: getRiskColor(risk),
+                  fillColor: getRiskColor(risk),
+                  fillOpacity: 0.7,
+                  weight: 1
+                }}
+              >
+                <Tooltip>
+                  <strong>{airport.airport}</strong><br/>
+                  Flights: {airport.flight_count}<br/>
+                  Avg Prob: {(avgProb * 100).toFixed(1)}%
+                </Tooltip>
+              </CircleMarker>
+            );
+          })}
+        </MapContainer>
       </div>
     </div>
-  )
+  );
 }
