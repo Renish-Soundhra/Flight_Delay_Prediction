@@ -1,7 +1,7 @@
 export default function FeatureImportanceChart({ title, data, scoringLabel }) {
   if (!data || data.length === 0) {
     return (
-      <div className="chart-block">
+      <div className="card chart-block">
         <div className="chart-title">{title}</div>
         <div style={{ padding: '16px', color: 'var(--text-dim)' }}>
           Feature importance data is not available.
@@ -14,7 +14,7 @@ export default function FeatureImportanceChart({ title, data, scoringLabel }) {
   const maxAbs = Math.max(...values.map((value) => Math.abs(value)), 0.0001)
 
   return (
-    <div className="chart-block">
+    <div className="card chart-block">
       <div className="chart-title">{title}</div>
       {scoringLabel && (
         <div className="chart-subtitle">{scoringLabel}</div>

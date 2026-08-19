@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import ModelPerformanceDashboard from '../components/ModelPerformanceDashboard.jsx'
 import Loading from '../components/Loading.jsx'
 import ErrorMessage from '../components/ErrorMessage.jsx'
-import { getModelMetrics } from '../services/api.js'
+import { getModelAnalytics } from '../services/dashboardApi.js'
 
 export default function ModelPerformance() {
   const [metricsData, setMetricsData] = useState(null)
@@ -16,7 +16,7 @@ export default function ModelPerformance() {
       setLoading(true)
       setError(null)
       try {
-        const data = await getModelMetrics()
+        const data = await getModelAnalytics()
         if (isMounted) setMetricsData(data)
       } catch (err) {
         if (isMounted) setError(err.message || 'Could not load model performance data.')

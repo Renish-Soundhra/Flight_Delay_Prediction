@@ -15,6 +15,9 @@ export default function Navbar() {
           <NavLink to="/predict" className={({ isActive }) => (isActive ? 'active' : '')}>
             PREDICT
           </NavLink>
+          <NavLink to="/dashboard" className={({ isActive }) => (isActive ? 'active' : '')}>
+            DASHBOARD
+          </NavLink>
           <NavLink to="/performance" className={({ isActive }) => (isActive ? 'active' : '')}>
             PERFORMANCE
           </NavLink>

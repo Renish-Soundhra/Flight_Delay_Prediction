@@ -74,6 +74,34 @@ button {
   padding: 0 24px;
 }
 
+/* -------------------- Unified Card System -------------------- */
+.card {
+  background: var(--panel);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius);
+  transition: box-shadow 0.15s ease, transform 0.15s ease, border-color 0.15s ease;
+}
+
+.card-interactive:hover {
+  border-color: var(--border);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transform: translateY(-1px);
+}
+
+.error-box {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(255, 92, 77, 0.12);
+  color: var(--red);
+  border: 1px solid rgba(255, 92, 77, 0.35);
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
 .eyebrow {
   font-family: var(--font-mono);
   font-size: 12px;
@@ -153,6 +181,20 @@ button {
 .navbar-links a.active {
   color: var(--bg);
   background: var(--amber);
+}
+
+@media (max-width: 768px) {
+  .navbar-inner {
+    flex-direction: column;
+    height: auto;
+    padding: 16px 0;
+    gap: 12px;
+  }
+  
+  .navbar-links {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
 }
 
 /* -------------------- Split-flap board -------------------- */
@@ -439,20 +481,27 @@ button {
 .field input,
 .field select {
   background: var(--bg-raised);
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-soft);
   color: var(--text);
-  padding: 12px 14px;
+  padding: 14px 16px;
   border-radius: var(--radius);
   font-family: var(--font-mono);
   font-size: 14px;
-  transition: border-color 0.12s ease, box-shadow 0.12s ease;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.field input:hover,
+.field select:hover {
+  border-color: var(--border);
+  background: var(--panel);
 }
 
 .field input:focus,
 .field select:focus {
   outline: none;
   border-color: var(--amber);
-  box-shadow: 0 0 0 3px rgba(245, 179, 1, 0.14);
+  box-shadow: 0 0 0 2px rgba(245, 179, 1, 0.15);
+  background: var(--panel);
 }
 
 .field input::placeholder {
@@ -469,11 +518,9 @@ button {
 /* -------------------- Prediction result -------------------- */
 
 .result-card {
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  background: var(--panel);
   padding: 40px;
   text-align: center;
+  background: var(--bg-raised);
 }
 
 .result-badge {
@@ -588,9 +635,6 @@ button {
 }
 
 .metric-card {
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  background: var(--panel);
   padding: 20px;
 }
 
@@ -659,10 +703,7 @@ button {
 /* -------------------- Charts -------------------- */
 
 .chart-block {
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  background: var(--panel);
-  padding: 24px;
+  padding: 20px;
 }
 
 .chart-title {

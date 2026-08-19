@@ -41,23 +41,35 @@ def load_test_data(max_samples=2000, random_state=42, prefer_permutation_sample=
             raise FileNotFoundError(f"TEST_DATA_PATH not found: {path}")
         if path.suffix != ".npz":
             raise FileNotFoundError(f"Unsupported TEST_DATA_PATH format: {path}")
-        data = np.load(path)
-        X = data["X"].astype(np.float32)
-        y = data["y"].astype(int)
+        if path.is_dir():
+            X = np.load(path / "X.npy").astype(np.float32)
+            y = np.load(path / "y.npy").astype(int)
+        else:
+            data = np.load(path)
+            X = data["X"].astype(np.float32)
+            y = data["y"].astype(int)
         return _subsample(X, y, max_samples, random_state)
 
     permutation_path = ARTIFACT_DIR / "permutation_sample.npz"
     if prefer_permutation_sample and permutation_path.exists():
-        data = np.load(permutation_path)
-        X = data["X"].astype(np.float32)
-        y = data["y"].astype(int)
+        if permutation_path.is_dir():
+            X = np.load(permutation_path / "X.npy").astype(np.float32)
+            y = np.load(permutation_path / "y.npy").astype(int)
+        else:
+            data = np.load(permutation_path)
+            X = data["X"].astype(np.float32)
+            y = data["y"].astype(int)
         return _subsample(X, y, max_samples, random_state)
 
     npz_path = ARTIFACT_DIR / "test_data.npz"
     if npz_path.exists():
-        data = np.load(npz_path)
-        X = data["X"].astype(np.float32)
-        y = data["y"].astype(int)
+        if npz_path.is_dir():
+            X = np.load(npz_path / "X.npy").astype(np.float32)
+            y = np.load(npz_path / "y.npy").astype(int)
+        else:
+            data = np.load(npz_path)
+            X = data["X"].astype(np.float32)
+            y = data["y"].astype(int)
         return _subsample(X, y, max_samples, random_state)
 
     x_path = ARTIFACT_DIR / "X_test.npy"

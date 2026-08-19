@@ -37,9 +37,13 @@ def get_evaluation_curves():
             "test sample of the existing HistGradientBoosting evaluation matrices."
         )
 
-    data = np.load(CURVE_SAMPLE_PATH)
-    X = data["X"].astype(np.float32)
-    y = data["y"].astype(int)
+    if CURVE_SAMPLE_PATH.is_dir():
+        X = np.load(CURVE_SAMPLE_PATH / "X.npy").astype(np.float32)
+        y = np.load(CURVE_SAMPLE_PATH / "y.npy").astype(int)
+    else:
+        data = np.load(CURVE_SAMPLE_PATH)
+        X = data["X"].astype(np.float32)
+        y = data["y"].astype(int)
     probabilities = model_loader.model.predict_proba(X)[:, 1]
     threshold = float(model_loader.threshold)
     predictions = (probabilities >= threshold).astype(int)
