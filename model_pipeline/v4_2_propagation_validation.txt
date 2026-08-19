@@ -1,0 +1,24 @@
+STEP 16 — V4.2 AIRCRAFT PROPAGATION VALIDATION
+================================================================================
+
+Rows: 5,714,008
+V4.1 model features: 64
+V4.2 model features: 68
+
+NEW FEATURES
+--------------------------------------------------------------------------------
+previous_flight_arrival_delay
+tight_turnaround
+is_first_flight_of_day
+aircraft_cumulative_delay_today
+
+Tight turnaround threshold: 45.0 minutes
+Maximum connection gap: 1440.0 minutes
+
+LEAKAGE AUDIT
+--------------------------------------------------------------------------------
+Target excluded.
+Current flight actual delay excluded.
+Current flight actual arrival excluded.
+Future flights excluded.
+Only previous aircraft information used.

@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.pyc
+
+# Virtual environments
+.venv/
+.venv_cuda/
+venv/
+env/
+
+# Temporary files
+.pip_temp/
+*.tmp
+
+# Large datasets
+*.csv
+
+# Model files
+*.cbm
+
+# Jupyter
+.ipynb_checkpoints/
+
+# OS
+.DS_Store
+Thumbs.db
